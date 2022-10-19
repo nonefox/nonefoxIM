@@ -23,7 +23,7 @@ func Login(ctx *gin.Context) {
 	//通过用户名和密码来获取用户数据（后续的密码我们会是使用MD5的盐值加密进行处理，现在明文处理）
 	//_, err := models.GetUserBasicByAccountPassword(accunt, password)
 	//对密码进行盐值加密处理
-	_, err := models.GetUserBasicByAccountPassword(accunt, tools.GetMd5(password))
+	ub, err := models.GetUserBasicByAccountPassword(accunt, tools.GetMd5(password))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": -1,
@@ -32,8 +32,20 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
+	//在用户登录时生成用户token信息
+	token, err := tools.GenerateToken(ub.Identity, ub.Email)
+	if err != nil { //若生成Token失败则返回内部错误
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"code": -1,
+			"msg":  "系统内部错误" + err.Error(),
+		})
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{ //成功则提示登录成功，返回生成的token信息
 		"code": 200,
-		"msg":  "success",
+		"msg":  "登陆成功",
+		"data": gin.H{
+			"token": token,
+		},
 	})
 }
