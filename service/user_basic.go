@@ -41,7 +41,7 @@ func Login(ctx *gin.Context) {
 		})
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{ //成功则提示登录成功，返回生成的token信息
+	ctx.JSON(http.StatusOK, gin.H{ //反之成功则提示登录成功，返回生成的token信息
 		"code": 200,
 		"msg":  "登陆成功",
 		"data": gin.H{
