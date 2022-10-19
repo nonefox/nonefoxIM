@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/gin-gonic/gin"
 	"im/models"
+	"im/tools"
 	"net/http"
 )
 
@@ -20,7 +21,9 @@ func Login(ctx *gin.Context) {
 	}
 
 	//通过用户名和密码来获取用户数据（后续的密码我们会是使用MD5的盐值加密进行处理，现在明文处理）
-	_, err := models.GetUserBasicByAccountPassword(accunt, password)
+	//_, err := models.GetUserBasicByAccountPassword(accunt, password)
+	//对密码进行盐值加密处理
+	_, err := models.GetUserBasicByAccountPassword(accunt, tools.GetMd5(password))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": -1,
