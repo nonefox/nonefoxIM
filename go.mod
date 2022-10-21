@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/golang-jwt/jwt/v4 v4.4.2
+	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	go.mongodb.org/mongo-driver v1.10.3
 )
 

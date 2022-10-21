@@ -1,7 +1,15 @@
 package tools
 
 import (
+	"crypto/tls"
 	"fmt"
+	"github.com/jordan-wright/email"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"im/define"
+	"math/rand"
+	"net/smtp"
+	"strconv"
+	"time"
 
 	"crypto/md5"
 	"github.com/golang-jwt/jwt/v4"
@@ -9,8 +17,8 @@ import (
 
 // UserClaims 用户的声明结构（我们会对他进行签名生成用户的token信息）
 type UserClaims struct {
-	Identity string `json:"identity"`
-	Email    string `json:"email"`
+	Identity primitive.ObjectID `json:"identity"` //这里我们在mongo中存储的是ObjectID类型
+	Email    string             `json:"email"`
 	jwt.RegisteredClaims
 }
 
@@ -24,9 +32,14 @@ func GetMd5(s string) string {
 
 // GenerateToken 通过用户的identity和email生成token
 func GenerateToken(identity, email string) (string, error) {
+	//把传入的string类型的Identity转换为mongo中的ObjectID类型
+	objectId, err := primitive.ObjectIDFromHex(identity)
+	if err != nil {
+		return "", err
+	}
 	//定义一个需要签名的用户声明信息
 	userClaim := UserClaims{
-		Identity:         identity,
+		Identity:         objectId,
 		Email:            email,
 		RegisteredClaims: jwt.RegisteredClaims{},
 	}
@@ -55,4 +68,28 @@ func AnalyseToken(tokenString string) (*UserClaims, error) {
 		return nil, fmt.Errorf("解析TOken出错：%v", err)
 	}
 	return userClaim, nil
+}
+
+// SendCode 通过邮箱发送验证码
+func SendCode(userEmail string, code string) error {
+	e := email.NewEmail() //new一个email对象
+	//配置email的基本信息
+	e.From = "Get <getUserEmail@613.com>" //用自己的邮箱
+	e.To = []string{userEmail}
+	e.Subject = "验证码已发送，请查收！"
+	e.HTML = []byte("您的验证码：<b>" + code + "</b>")
+	//设置163邮箱的中转协议，与邮箱密码（自己的邮箱密码）
+	return e.SendWithTLS("smtp.163.com:465",
+		smtp.PlainAuth("", "getUserEmail@163.com", define.MailPassword, "smtp.163.com"),
+		&tls.Config{InsecureSkipVerify: true, ServerName: "smtp.163.com"})
+}
+
+// GenerateCode 生成用来发送给用户邮箱中的验证码
+func GenerateCode() string {
+	rand.Seed(time.Now().UnixNano())
+	res := ""
+	for i := 0; i < 6; i++ {
+		res += strconv.Itoa(rand.Intn(10))
+	}
+	return res
 }

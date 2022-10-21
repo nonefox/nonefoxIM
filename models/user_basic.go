@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 )
 
@@ -39,7 +40,7 @@ func GetUserBasicByAccountPassword(account, password string) (*UserBasic, error)
 }
 
 // GetUserBasicByIdentity 通过用户的Identity来获取用户
-func GetUserBasicByIdentity(identity string) (*UserBasic, error) {
+func GetUserBasicByIdentity(identity primitive.ObjectID) (*UserBasic, error) {
 	ub := new(UserBasic)
 	//Mongo我们在Init包中定义的mmongoDB数据库的全局变量（所以这里就直接使用）
 	err := Mongo.Collection("user_basic").FindOne(context.Background(),
