@@ -3,9 +3,10 @@ package tools
 import (
 	"crypto/tls"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/jordan-wright/email"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"im/define"
+	"log"
 	"math/rand"
 	"net/smtp"
 	"strconv"
@@ -17,8 +18,8 @@ import (
 
 // UserClaims 用户的声明结构（我们会对他进行签名生成用户的token信息）
 type UserClaims struct {
-	Identity primitive.ObjectID `json:"identity"` //这里我们在mongo中存储的是ObjectID类型
-	Email    string             `json:"email"`
+	Identity string `json:"identity"`
+	Email    string `json:"email"`
 	jwt.RegisteredClaims
 }
 
@@ -32,14 +33,9 @@ func GetMd5(s string) string {
 
 // GenerateToken 通过用户的identity和email生成token
 func GenerateToken(identity, email string) (string, error) {
-	//把传入的string类型的Identity转换为mongo中的ObjectID类型
-	objectId, err := primitive.ObjectIDFromHex(identity)
-	if err != nil {
-		return "", err
-	}
 	//定义一个需要签名的用户声明信息
 	userClaim := UserClaims{
-		Identity:         objectId,
+		Identity:         identity,
 		Email:            email,
 		RegisteredClaims: jwt.RegisteredClaims{},
 	}
@@ -92,4 +88,14 @@ func GenerateCode() string {
 		res += strconv.Itoa(rand.Intn(10))
 	}
 	return res
+}
+
+// GetUUID 获取UUID作为我们用户的id使用
+func GetUUID() string {
+	u := uuid.New().String()
+	if u == "" {
+		log.Printf("生成uuid失败")
+		return ""
+	}
+	return u
 }

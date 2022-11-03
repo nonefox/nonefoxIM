@@ -9,7 +9,7 @@ import (
 // AuthCheck 验证用户token是否正确
 func AuthCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//获取用户token
+		//获取用户token（登录成功之后，我们会返给前端一个生成好的token信息，用户认证的时候前端带过来就可以了）
 		token := c.GetHeader("token")
 		//解析用户token
 		userClaims, err := tools.AnalyseToken(token)
