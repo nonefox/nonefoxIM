@@ -70,7 +70,7 @@ func AnalyseToken(tokenString string) (*UserClaims, error) {
 func SendCode(userEmail string, code string) error {
 	e := email.NewEmail() //new一个email对象
 	//配置email的基本信息
-	e.From = "Get <getUserEmail@613.com>" //用自己的邮箱
+	e.From = "Get <getUserEmail@163.com>" //用自己的邮箱
 	e.To = []string{userEmail}
 	e.Subject = "验证码已发送，请查收！"
 	e.HTML = []byte("您的验证码：<b>" + code + "</b>")

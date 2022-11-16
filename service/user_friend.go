@@ -46,8 +46,8 @@ func AddFriend(ctx *gin.Context) {
 	rb := &models.RoomBasic{
 		Identity:     tools.GetUUID(),
 		UserIdentity: uc.Identity, //当前用户加好友，所以创建的房间是当前用户的identity
-		CreateAt:     time.Now().Unix(),
-		UpdateAt:     time.Now().Unix(),
+		CreatedAt:    time.Now().Unix(),
+		UpdatedAt:    time.Now().Unix(),
 	}
 	err = models.InsertOneRoomBasic(rb)
 	if err != nil {
@@ -63,8 +63,8 @@ func AddFriend(ctx *gin.Context) {
 		Identity:     ub.Identity,
 		RoomIdentity: rb.Identity,
 		RoomType:     0,
-		CreateAt:     time.Now().Unix(),
-		UpdateAt:     time.Now().Unix(),
+		CreatedAt:    time.Now().Unix(),
+		UpdatedAt:    time.Now().Unix(),
 	}
 	err = models.InsertOneUserRoom(ur1)
 	if err != nil {
@@ -78,8 +78,8 @@ func AddFriend(ctx *gin.Context) {
 		Identity:     uc.Identity,
 		RoomIdentity: rb.Identity,
 		RoomType:     0,
-		CreateAt:     time.Now().Unix(),
-		UpdateAt:     time.Now().Unix(),
+		CreatedAt:    time.Now().Unix(),
+		UpdatedAt:    time.Now().Unix(),
 	}
 	err = models.InsertOneUserRoom(ur2)
 	if err != nil {

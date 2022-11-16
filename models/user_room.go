@@ -11,8 +11,8 @@ type UserRoom struct {
 	Identity     string `bson:"user_identity"`
 	RoomIdentity string `bson:"room_identity"`
 	RoomType     int    `bson:"room_type"` //[0:表示单独聊天，1:表示群体聊天]
-	CreateAt     int64  `bson:"create_at"`
-	UpdateAt     int64  `bson:"update_at"`
+	CreatedAt    int64  `bson:"created_at"`
+	UpdatedAt    int64  `bson:"updated_at"`
 }
 
 func (UserRoom) CollectionName() string {

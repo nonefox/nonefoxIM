@@ -13,8 +13,8 @@ type RoomBasic struct {
 	Name         string `bson:"name"`
 	Info         string `bson:"info"`
 	UserIdentity string `bson:"user_identity"`
-	CreateAt     int64  `bson:"create_at"`
-	UpdateAt     int64  `bson:"update_at"`
+	CreatedAt    int64  `bson:"created_at"`
+	UpdatedAt    int64  `bson:"updated_at"`
 }
 
 func (RoomBasic) CollectionName() string {

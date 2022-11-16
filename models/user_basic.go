@@ -8,15 +8,15 @@ import (
 
 // UserBasic 聊天室用户基本信息与数据库结构对应
 type UserBasic struct {
-	Identity string `bson:"identity"` //绑定自己的的identity，不使用mongo自己生成的id
-	Account  string `bson:"account"`
-	Password string `bson:"password"`
-	NickName string `bson:"nickName"`
-	Sex      int    `bson:"sex"`
-	Email    string `bson:"email"`
-	Avatar   string `bson:"avatar"`
-	CreateAt int64  `bson:"create_at"`
-	UpdateAt int64  `bson:"update_at"`
+	Identity  string `bson:"identity"` //绑定自己的的identity，不使用mongo自己生成的id
+	Account   string `bson:"account"`
+	Password  string `bson:"password"`
+	NickName  string `bson:"nickName"`
+	Sex       int    `bson:"sex"`
+	Email     string `bson:"email"`
+	Avatar    string `bson:"avatar"` //头像
+	CreatedAt int64  `bson:"created_at"`
+	UpdatedAt int64  `bson:"updated_at"`
 }
 
 // CollectionName 获取当前数据库名称

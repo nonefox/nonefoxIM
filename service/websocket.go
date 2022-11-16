@@ -55,8 +55,8 @@ func WebSocketMessage(ctx *gin.Context) {
 			UserIdentity: uc.Identity,
 			RoomIdentity: ms.RoomIdentity,
 			Data:         ms.Message,
-			CreateAt:     time.Now().Unix(),
-			UpdateAt:     time.Now().Unix(),
+			CreatedAt:    time.Now().Unix(),
+			UpdatedAt:    time.Now().Unix(),
 		}
 
 		//在把消息发送给关联用户之前先把消息存储起来

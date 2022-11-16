@@ -20,8 +20,6 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	//通过用户名和密码来获取用户数据（后续的密码我们会是使用MD5的盐值加密进行处理，现在明文处理）
-	//_, err := models.GetUserBasicByAccountPassword(account, password)
 	//对密码进行盐值加密处理
 	ub, err := models.GetUserBasicByAccountPassword(account, tools.GetMd5(password))
 	if err != nil {

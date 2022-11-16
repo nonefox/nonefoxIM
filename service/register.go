@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// Register 用户登录
+// Register 用户注册
 func Register(ctx *gin.Context) {
 	//获取注册表单提交的数据
 	code := ctx.PostForm("code")
@@ -58,12 +58,12 @@ func Register(ctx *gin.Context) {
 	}
 	//验证码正确之后，我们就把新注册的用户信息存入用户表
 	ub := &models.UserBasic{
-		Identity: tools.GetUUID(),
-		Account:  account,
-		Password: tools.GetMd5(password),
-		Email:    email,
-		CreateAt: time.Now().Unix(),
-		UpdateAt: time.Now().Unix(),
+		Identity:  tools.GetUUID(),
+		Account:   account,
+		Password:  tools.GetMd5(password),
+		Email:     email,
+		CreatedAt: time.Now().Unix(),
+		UpdatedAt: time.Now().Unix(),
 	}
 
 	//存入用户表

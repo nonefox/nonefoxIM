@@ -12,8 +12,8 @@ type MessageBasic struct {
 	UserIdentity string `bson:"user_identity"`
 	RoomIdentity string `bson:"room_identity"`
 	Data         string `bson:"data"`
-	CreateAt     int64  `bson:"create_at"`
-	UpdateAt     int64  `bson:"update_at"`
+	CreatedAt    int64  `bson:"created_at"`
+	UpdatedAt    int64  `bson:"updated_at"`
 }
 
 // CollectionName 获取room数据库名
@@ -40,7 +40,7 @@ func GetMessageListByRoomIdentity(roomIdentity string, pSize, skip *int64) ([]*M
 		&options.FindOptions{
 			Limit: pSize,
 			Skip:  skip,
-			Sort:  bson.D{{"create_at", -1}}, //依据消息创建时间来排序
+			Sort:  bson.D{{"created_at", -1}}, //依据消息创建时间来排序
 		})
 	if err != nil {
 		log.Printf("获取消息记录失败：%v", err)
